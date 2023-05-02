@@ -6,5 +6,8 @@ The code is partially mine, and partially not mine, do whatever u want with it, 
 ## pip package that u need:
 *PySimpleGUI* and *pytube*
 
-## credits:
+## GUI preview:
+![GUI preview](./media/windowView.png)
+
+## Credit:
 sti.ghi
