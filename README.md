@@ -1,9 +1,13 @@
 # youMusicDownloader
-Python GUI for a youtube songs downloader. 
+Python GUI for a youtube songs downloader. This small software grant you to download youtube audio for free, you can choose to download song by song or playlist by playlist.
 
 The code is partially mine, and partially not mine, do whatever you want with it, hope you upgrade it (it is not difficult).
 
 At the first start you need to copy-paste a code given by the software into a url and then login with you youtube account.
+
+## News:
+The software now supports **multiple playlists download** and it is now possible to see the progress in a bar!!
+
 ## pip package that you need:
 *PySimpleGUI*, *pytube*, *pillow*
 
