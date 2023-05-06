@@ -29,49 +29,43 @@ def download_urls(songs: list[str], bar)-> None:
         print('thread {} finished'.format(index))
         thread.join()
     
-outdir="./youMusicDownloader/"
+def main():
+    outdir="./youMusicDownloader/"
+    sg.theme('DarkBrown3')     
+    # Create the Window
+    window = make_window(outdir)
 
-#gui start
-
-sg.theme('DarkBrown3') 
-# Create the Window
-window = make_window(outdir)
-# Event Loop to process "events" and get the "values" of the inputs
-
-threads = list()
-while True:    #Controller
-    url=[]
-    event, values = window.read()
-          
-    if event == sg.WIN_CLOSED or event == "Close": 
-        break
-    
-    if values['-FOLDER-'] != '' or values['-FOLDER-'] is None:
-        outdir = values['-FOLDER-']
-
-    if values['-PLAYLIST-']:
-        window.__getitem__('-PLAYLISTURL-').update(visible=True)
-        window.__getitem__('-SONGS-').update(visible=False)
-    else:    
-        window.__getitem__('-PLAYLISTURL-').update(visible=False)
-        window.__getitem__('-SONGS-').update(visible=True)
-
-    if len(values['-SONGS-']) > 0 or len(values['-PLAYLISTURL-']) > 0: 
-        progress_bar = window.__getitem__('-PROGRESS-')
-        progress_bar.update(visible=True)
-        if values['-PLAYLIST-'] :
-            download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar);
-        else:
-            download_urls(values['-SONGS-'].split(", "), progress_bar);
-        progress_bar.update(visible=False)
+    while True:    #Controller
+        event, values = window.read()
+            
+        if event == sg.WIN_CLOSED or event == "Close": 
+            break
         
-    if values['-THEME-'] is not sg.theme():
-        sg.theme(values['-THEME-'])
-        print("new theme is {}".format(values['-THEME-']))
-        window.close()
-        window = make_window(outdir)
-    
-          
-window.close()
+        if values['-FOLDER-'] != '' or values['-FOLDER-'] is None:
+            outdir = values['-FOLDER-']
 
-#gui end
+        if values['-PLAYLIST-']:
+            window.__getitem__('-PLAYLISTURL-').update(visible=True)
+            window.__getitem__('-SONGS-').update(visible=False)
+        else:    
+            window.__getitem__('-PLAYLISTURL-').update(visible=False)
+            window.__getitem__('-SONGS-').update(visible=True)
+
+        if len(values['-SONGS-']) > 0 or len(values['-PLAYLISTURL-']) > 0: 
+            progress_bar = window.__getitem__('-PROGRESS-')
+            progress_bar.update(visible=True)
+            if values['-PLAYLIST-'] :
+                download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar);
+            else:
+                download_urls(values['-SONGS-'].split(", "), progress_bar);
+            progress_bar.update(visible=False)
+            
+        if values['-THEME-'] is not sg.theme():
+            sg.theme(values['-THEME-'])
+            print("new theme is {}".format(values['-THEME-']))
+            window.close()
+            window = make_window(outdir)
+    window.close()
+
+
+main()

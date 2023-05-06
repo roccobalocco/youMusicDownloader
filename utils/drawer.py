@@ -3,7 +3,7 @@ import utils.df as df
 from PIL import Image
 
 def roundButtonImg(text: str, key: str):
-    w, h = df.getSize(text, df.fontDefiner('./media/ARIAL.TTF', 25))
+    w, h = df.getSize(text, df.fontDefiner('media/Genius.ttf', 25))
     w += 10; h += 10
 
     color, highlighted = '#FFFFFF', sg.theme_background_color(),
@@ -27,5 +27,5 @@ def make_window(outdir):
                 [sg.Input(key='-FOLDER-'), sg.FolderBrowse(target='-FOLDER-')],
                 [sg.ProgressBar(key='-PROGRESS-', max_value=100, s=(70, 2))],
                 [roundButtonImg("Download", "Download")[0], roundButtonImg("Close", "Close")[0], sg.Combo(sg.theme_list(), default_value=sg.theme(), s=(15,22), enable_events=True, readonly=True, key='-THEME-')]]
-    return sg.Window('youMusicDownloader', layout, font=('Brain', 12))
+    return sg.Window('youMusicDownloader', layout, font=('brain', 12))
 
