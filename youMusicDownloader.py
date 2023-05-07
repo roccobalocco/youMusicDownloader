@@ -4,16 +4,18 @@ from utils.drawer import make_window
 from utils.threadDownloader import download_thread
 import threading
 
-def download_playlists(playlists: list[str], bar)-> None:
+def download_playlists(playlists: list[str], bar, outdir: str)-> None:
     songs = []
     for playlist in playlists:
         songs.extend(youtubePlaylistExtractor(playlist))
-    download_urls(songs, bar)
+    download_urls(songs, bar, outdir)
     
-def download_urls(songs: list[str], bar)-> None:
+def download_urls(songs: list[str], bar, outdir: str)-> None:
+    url = []
     for v in songs:
         url.append(v)
 
+    threads = []
     cnt = 0
     for sound in url:
         if not sound.__contains__('&list'):    
@@ -55,9 +57,9 @@ def main():
             progress_bar = window.__getitem__('-PROGRESS-')
             progress_bar.update(visible=True)
             if values['-PLAYLIST-'] :
-                download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar);
+                download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar, outdir);
             else:
-                download_urls(values['-SONGS-'].split(", "), progress_bar);
+                download_urls(values['-SONGS-'].split(", "), progress_bar, outdir);
             progress_bar.update(visible=False)
             
         if values['-THEME-'] is not sg.theme():
