@@ -28,8 +28,9 @@ def youtube2mpX (outdir: str, url: str ="https://youtu.be/xvFZjo5PgG0", mpx: str
     
 def youtubePlaylistExtractor(url: str)-> list[str]:
     if not url.__contains__('&list'):
-        print("Song instead of playlist")
         return []
     playlist =  Playlist(url)
     return playlist.video_urls
     
+def findSong(infos: dict())-> str:
+    return ""
