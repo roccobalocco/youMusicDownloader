@@ -1,8 +1,16 @@
 from utils.ytFuns import youtubePlaylistExtractor
+from utils.sptFuns import spotifyPlaylistExtractor
 import PySimpleGUI as sg
 from utils.drawer import make_window
 from utils.threadDownloader import download_thread
 import threading
+
+def download_spotify_playlist(playlists: list[str], bar, outdir: str)-> None:
+    songs = []
+    for playlist in playlists:
+        songs.extend(spotifyPlaylistExtractor(playlist))
+    download_urls(songs, bar, outdir)
+    
 
 def download_playlists(playlists: list[str], bar, outdir: str)-> None:
     songs = []
@@ -57,9 +65,12 @@ def main():
             progress_bar = window.__getitem__('-PROGRESS-')
             progress_bar.update(visible=True)
             if values['-PLAYLIST-'] :
-                download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar, outdir);
+                if values['-SPOTI-']:
+                    download_spotify_playlist(values['-PLAYLISTURL-'].split(', '), progress_bar, outdir)
+                else:
+                    download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar, outdir)
             else:
-                download_urls(values['-SONGS-'].split(", "), progress_bar, outdir);
+                download_urls(values['-SONGS-'].split(", "), progress_bar, outdir)
             progress_bar.update(visible=False)
             
         if values['-THEME-'] is not sg.theme():
