@@ -66,7 +66,6 @@ def main():
             progress_bar.update(visible=True)
             if values['-PLAYLIST-'] :
                 if values['-SPOTI-']:
-                    print("GOING TO PRINT SPOTI THINGS")
                     download_spotify_playlist(values['-PLAYLISTURL-'].split(', '), progress_bar, outdir)
                 else:
                     download_playlists(values['-PLAYLISTURL-'].split(', '), progress_bar, outdir)

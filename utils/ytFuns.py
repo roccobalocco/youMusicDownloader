@@ -1,4 +1,4 @@
-from pytube import YouTube, Playlist
+from pytube import YouTube, Playlist, Search
 import os
 from pathlib import Path
 
@@ -33,4 +33,8 @@ def youtubePlaylistExtractor(url: str)-> list[str]:
     return playlist.video_urls
     
 def findSong(infos: dict())-> str:
-    return ""
+    #https://www.youtube.com/watch?v=sbwPp-H4RHw&pp=ygUYc29uZ25hbWUgYXV0aG9yMSBhdXRob3Iy
+    query = infos['title']
+    for artist in infos['artists']:
+        query += ' ' + artist
+    return Search(query).results[0].watch_url

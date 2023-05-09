@@ -1,5 +1,5 @@
 import spotipy as spt
-from ytFuns import findSong
+from utils.ytFuns import findSong
 
 def getInfoSong(track):
     listArtist = list()
@@ -23,11 +23,3 @@ def spotifyPlaylistExtractor(url: str)-> list[str]:
     for d in dictList:
         urls.append(findSong(d))
     return urls
-
-def get_track_urls(tracks):
-    tn= []
-    for track in tracks:
-        print(track.name)
-        print(track)
-    return []
-spotifyPlaylistExtractor('https://open.spotify.com/playlist/37i9dQZF1DWT888el8RDPq?si=0726bc9a953549a0')
