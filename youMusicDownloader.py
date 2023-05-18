@@ -2,14 +2,36 @@ from utils.ytFuns import youtubePlaylistExtractor
 from utils.sptFuns import spotifyPlaylistExtractor
 import PySimpleGUI as sg
 from utils.drawer import make_window
-from utils.threadDownloader import download_thread
+from utils.threadDownloader import download_thread, search_thread
 import threading
 
 def download_spotify_playlist(playlists: list[str], bar, outdir: str)-> None:
-    songs = []
+    songs = dict()
+    urls = list()
     for playlist in playlists:
+        threads = []
         songs.extend(spotifyPlaylistExtractor(playlist))
-    download_urls(songs, bar, outdir)
+        cnt = 0
+        songsL = list(songs)
+        songsItems = list()
+        while len(songsL) > 0:
+            if len(songsL) > 100:
+                songsItems.append(songsL[:100])
+                songsL = songsL[100:]
+            else:
+                songsItems.append(songsL)
+        for key in songsL:
+            t = threading.Thread(target=search_thread, args=(songs[key], ), daemon=True)
+            threads.append(t)
+            t.start()        
+        for _, thread in enumerate(threads):
+            urls.append(thread.join())
+    while len(urls) > 0:
+        if len(urls) > 100:
+            download_urls(urls[:100], bar, outdir)
+            urls = urls[100:]
+        else:
+            download_urls(urls, bar, outdir)
     
 
 def download_playlists(playlists: list[str], bar, outdir: str)-> None:
@@ -19,25 +41,32 @@ def download_playlists(playlists: list[str], bar, outdir: str)-> None:
     download_urls(songs, bar, outdir)
     
 def download_urls(songs: list[str], bar, outdir: str)-> None:
-    url = []
+    urls = []
     for v in songs:
-        url.append(v)
+        urls.append(v)
 
+    urlLen = len(urls)
     threads = []
     cnt = 0
-    for sound in url:
-        if not sound.__contains__('&list'):    
-            cnt += 1
-            bar.update_bar(round((cnt/len(songs)) * 100, 2))
-            t = threading.Thread(target=download_thread, args=(outdir, sound, cnt-1, ), daemon=True)
-            threads.append(t)
-            t.start()        
-            sg.popup_timed('youMusicDownloader progress {}%\nsong number {}'.format(round((cnt/len(songs)) * 100, 2), cnt), relative_location=(1000, 500), title='Progress')
+    while len(urls) > 0:
+        if len(urls) > 100:
+            url = urls[:100]
+            urls = urls[100:]
         else:
-            print('Playlist instead of song')
-    for index, thread in enumerate(threads):
-        print('thread {} finished'.format(index))
-        thread.join()
+            url = urls
+        for sound in url:
+            if not sound.__contains__('&list'):    
+                cnt += 1
+                bar.update_bar(round((cnt/urlLen) * 100, 2))
+                t = threading.Thread(target=download_thread, args=(outdir, sound, cnt-1, ), daemon=True)
+                threads.append(t)
+                t.start()        
+                sg.popup_timed('youMusicDownloader progress {}%\nsong number {}'.format(round((cnt/urlLen) * 100, 2), cnt), relative_location=(1000, 500), title='Progress')
+            else:
+                print('Playlist instead of song')
+        for index, thread in enumerate(threads):
+            print('thread {} finished'.format(index))
+            thread.join()
     
 def main():
     outdir="./youMusicDownloader/"
