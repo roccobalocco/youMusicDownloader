@@ -19,7 +19,4 @@ def spotifyPlaylistExtractor(url: str)-> list[str]:
         dictList.append(getInfoSong(track['track']))
         
     #https://open.spotify.com/playlist/37i9dQZF1DWT888el8RDPq?si=0726bc9a953549a0
-    urls = []
-    for d in dictList:
-        urls.append(findSong(d))
-    return urls
+    return dictList
