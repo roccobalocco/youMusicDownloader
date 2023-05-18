@@ -19,7 +19,7 @@ The software now supports the spotify playlist download
 ![GUI preview](./media/windowView.png)
 
 ## Alert:
-The code is now under construction, for **the right one look at the release and download it from there**
+For downloading spotify playlists be sure that both the **checkbox** are true (clicked).
 
 ## Credit:
 sti.ghi
